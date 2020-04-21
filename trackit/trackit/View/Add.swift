@@ -1,5 +1,5 @@
 //
-//  AssetRow.swift
+//  Add.swift
 //  trackit
 //
 //  Created by Houman Brinjcargorabi on 19/04/2020.
@@ -9,20 +9,21 @@
 import Foundation
 import SwiftUI
 
-struct AssetRow: View {
-    var asset: Asset
+
+
+struct Add: View {
+    private let TAB_NAME: String = "Add"
+    private let TAB_ICON: String = "magnifyingglass"
     
     var body: some View {
-         HStack {
-            asset.getImage()
-            asset.getText()
-            Spacer()
+        TabItem(TAB_NAME, image: TAB_ICON) {
+            Text("add")
         }
     }
 }
 
-struct asset_view: PreviewProvider {
+struct add_view: PreviewProvider {
     static var previews: some View {
-        AssetRow(asset: Item(id: 1, name: "Test", type: .item))
+        Add()
     }
 }

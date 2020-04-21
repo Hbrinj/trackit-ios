@@ -1,5 +1,5 @@
 //
-//  Asset.swift
+//  ViewProtocol.swift
 //  trackit
 //
 //  Created by Houman Brinjcargorabi on 19/04/2020.
@@ -9,11 +9,7 @@
 import Foundation
 import SwiftUI
 
-struct Asset: Codable, Hashable {
-    var id: Int
-    var name: String
-    
-    var image: Image {
-        Image("first")
-    }
+public protocol ViewProtocol {
+    var name: String { get }
+    var image: Image { get }
 }

@@ -1,0 +1,20 @@
+# Uncomment the next line to define a global platform for your project
+platform :ios, '13.4'
+
+target 'trackit' do
+  # Comment the next line if you don't want to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for trackit
+  pod  'RealmSwift', '~> 4.4.1'
+
+  target 'trackitTests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+  target 'trackitUITests' do
+    # Pods for testing
+  end
+
+end

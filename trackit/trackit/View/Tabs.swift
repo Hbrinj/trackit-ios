@@ -13,31 +13,14 @@ struct Tabs: View {
  
     var body: some View {
         TabView(selection: $selection){
-            Inventory()
-                .tag(0)
-            Text("Add")
-                .font(.title)
-                .tabItem {
-                    VStack {
-                        Image("second")
-                        Text("Add")
-                    }
-            }.tag(1)
-            Text("Find")
-                .font(.title)
-                .tabItem {
-                    VStack {
-                        Image("first")
-                        Text("Scan")
-                    }
-                }
-                .tag(2)
+            Inventory().tag(0)
+            Add().tag(1)
         }
     }
 }
 
 struct tabs_view: PreviewProvider {
     static var previews: some View {
-        Tabs()
+        Tabs().environmentObject(NavigationState())
     }
 }
