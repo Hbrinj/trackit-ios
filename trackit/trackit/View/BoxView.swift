@@ -10,8 +10,18 @@ import Foundation
 import SwiftUI
 
 struct BoxView: View {
-    var box: Box
+    @Binding var shouldNavShow: Bool
+    private var box: Box
+    
+    init(_ box: Box, shouldNavShow: Binding<Bool>) {
+        self.box = box
+        self._shouldNavShow = shouldNavShow
+    }
+    
     var body: some View {
-        box.getText().foregroundColor(.green)
+        box.getText().foregroundColor(.green).navigationBarTitle(box.getText(), displayMode: .inline)
+        .onAppear {
+            self.shouldNavShow = false
+        }
     }
 }

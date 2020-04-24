@@ -10,19 +10,17 @@ import Foundation
 import SwiftUI
 
 struct NavigationController<Content: View> : View {
+    private let EMPTY_TITLE: String = ""
     let content: Content
-    @Binding var show: Bool
-    let name: String
-    
-    init(_ name: String, show: Binding<Bool>, @ViewBuilder content: () -> Content) {
+    @Binding var shouldHide: Bool
+    init(_ shouldHide: Binding<Bool>, @ViewBuilder content: () -> Content) {
         self.content = content()
-        self.name = name
-        self._show = show
+        self._shouldHide = shouldHide
     }
     
     var body: some View {
         content
-            .navigationBarHidden(show)
-            .navigationBarTitle(name)
+            .navigationBarHidden(shouldHide)
+            .navigationBarTitle(EMPTY_TITLE)
     }
 }

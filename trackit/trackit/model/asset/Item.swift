@@ -10,9 +10,9 @@ import Foundation
 import SwiftUI
 
 struct Item: Asset, Codable, Hashable {
-   
     var id: Int
     var name: String
+    var description: String?
     var location: String?
     var image: String?
     var type: AssetType = .item

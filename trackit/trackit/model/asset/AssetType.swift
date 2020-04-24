@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum AssetType: Int, Hashable, Codable {
+enum AssetType: String, Hashable, Codable, CaseIterable {
     case box
     case item
 }

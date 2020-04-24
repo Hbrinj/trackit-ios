@@ -16,25 +16,28 @@ struct Inventory: View {
     private let TAB_ICON: String  = "tray.2"
 
     @State var searchTerm: String = ""
-    @State var navigationIsHidden: Bool = true
+    @State var shouldHide: Bool = true
+    @State var showScanner: Bool = false
     
     var body: some View {
         TabItem(TAB_NAME, image: TAB_ICON) {
             NavigationView {
-                NavigationController("", show: $navigationIsHidden) {
+                NavigationController($shouldHide) {
                     VStack {
                         HStack {
                             SearchBar(searchTerm: $searchTerm)
                             Button(action: self.qrScanner) {
                                 Image(systemName: "qrcode.viewfinder")
+                            }.sheet(isPresented: $showScanner) {
+                                Text("Scanner")
                             }
                             Spacer()
                         }
                         List(list.filter(search(asset:)), id: \.id) { self.build($0) }
                     }
+                }.onAppear {
+                    self.shouldHide = true
                 }
-            }.onAppear {
-                self.navigationIsHidden = true
             }
         }
     }
@@ -45,9 +48,9 @@ struct Inventory: View {
         
         switch asset {
         case let item as Item:
-            view = AnyView(ItemView(item: item, isNavigationHidden: $navigationIsHidden))
+            view = AnyView(ItemView(item, shouldNavShow: $shouldHide))
         case let box as Box:
-            view = AnyView(BoxView(box: box))
+            view = AnyView(BoxView(box, shouldNavShow: $shouldHide))
         default:
             print("Unable to build asset in inventory")
         }
@@ -62,6 +65,7 @@ struct Inventory: View {
     }
     
     func qrScanner() {
+        self.showScanner.toggle()
         print("navigating")
     }
 }

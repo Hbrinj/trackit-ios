@@ -13,6 +13,7 @@ protocol Asset{
     var id: Int { get set }
     var type: AssetType { get set }
     var name: String { get set }
+    var description: String? { get set }
     var image: String? { get set }
     var location: String? { get set }
     

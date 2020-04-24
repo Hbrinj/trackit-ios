@@ -10,11 +10,25 @@ import Foundation
 import SwiftUI
 
 struct ItemView: View {
+    @Binding var shouldNavShow: Bool
+
+    @State private var nameField: String = ""
     var item: Item
-    @Binding var isNavigationHidden: Bool
+    
+    init(_ item: Item, shouldNavShow: Binding<Bool>) {
+        self.item = item
+        self._shouldNavShow = shouldNavShow
+    }
+    
     var body: some View {
-        item.getText().onAppear {
-            self.isNavigationHidden = false
-        }
+        VStack {
+            HStack {
+                Text("Name")
+                TextField("Name", text: $nameField)
+            }
+        }.navigationBarTitle(item.getText(), displayMode: .inline)
+            .onAppear {
+                self.shouldNavShow = false
+            }
     }
 }

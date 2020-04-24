@@ -12,6 +12,7 @@ import SwiftUI
 struct Box: Asset, Codable, Hashable {
     var id: Int
     var name: String
+    var description: String?
     var location: String?
     var items: [Int] = []
     
