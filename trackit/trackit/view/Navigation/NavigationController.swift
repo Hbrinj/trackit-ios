@@ -11,16 +11,15 @@ import SwiftUI
 
 struct NavigationController<Content: View> : View {
     private let EMPTY_TITLE: String = ""
-    let content: Content
-    @Binding var shouldHide: Bool
-    init(_ shouldHide: Binding<Bool>, @ViewBuilder content: () -> Content) {
+    private let content: Content
+    @EnvironmentObject var navigationState: NavigationState
+    init(@ViewBuilder content: () -> Content) {
         self.content = content()
-        self._shouldHide = shouldHide
     }
     
     var body: some View {
         content
-            .navigationBarHidden(shouldHide)
+            .navigationBarHidden(navigationState.hideNavigation)
             .navigationBarTitle(EMPTY_TITLE)
     }
 }

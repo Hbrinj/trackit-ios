@@ -9,20 +9,20 @@
 import Foundation
 import SwiftUI
 
-let list: [Asset] = [Item(id: 1, name: "item"), Box(id: 2, name: "box2")] as! [Asset]
-
 struct Inventory: View {
+    @EnvironmentObject var navigationState: NavigationState
+    @EnvironmentObject var assetRepo: AssetRepository
+
     private let TAB_NAME: String = "Inventory"
     private let TAB_ICON: String  = "tray.2"
 
     @State var searchTerm: String = ""
-    @State var shouldHide: Bool = true
     @State var showScanner: Bool = false
     
     var body: some View {
         TabItem(TAB_NAME, image: TAB_ICON) {
             NavigationView {
-                NavigationController($shouldHide) {
+                NavigationController {
                     VStack {
                         HStack {
                             SearchBar(searchTerm: $searchTerm)
@@ -33,31 +33,33 @@ struct Inventory: View {
                             }
                             Spacer()
                         }
-                        List(list.filter(search(asset:)), id: \.id) { self.build($0) }
+                        List {
+                            ForEach(assets(), id: \.self.id) {
+                                asset in
+                                NavigationLink(destination: AssetHost(asset: asset)) {
+                                    AssetRow(asset: asset)
+                                }
+                            }.onDelete(perform: delete(at:))
+                        }
                     }
                 }.onAppear {
-                    self.shouldHide = true
+                    self.navigationState.hideNavigation = true;
                 }
             }
         }
     }
     
-    func build(_ asset: Asset) -> AnyView {
-        
-        var view: AnyView = AnyView(EmptyView())
-        
-        switch asset {
-        case let item as Item:
-            view = AnyView(ItemView(item, shouldNavShow: $shouldHide))
-        case let box as Box:
-            view = AnyView(BoxView(box, shouldNavShow: $shouldHide))
-        default:
-            print("Unable to build asset in inventory")
-        }
-        
-        return AnyView(NavigationLink(destination: view) {
-            AssetRow(asset: asset)
-        })
+    func assets() -> [Asset] {
+        return assetRepo.assets
+            .filter(search(asset:))
+    }
+    
+    func isValid(asset: Asset) -> Bool {
+        return !asset.isInvalidated
+    }
+ 
+    func delete(at indexSet: IndexSet) {
+        assetRepo.delete(at: indexSet)
     }
     
     func search(asset: Asset) -> Bool {
@@ -72,10 +74,6 @@ struct Inventory: View {
 
 struct inventory_view: PreviewProvider {
     static var previews: some View {
-        Inventory().environmentObject(NavigationState())
+        Inventory().environmentObject(NavigationState()).environmentObject(AssetRepository())
     }
-}
-
-class NavigationState: ObservableObject {
-    @Published var isNavigateHidden: Bool = true
 }

@@ -14,15 +14,24 @@ struct AssetRow: View {
     
     var body: some View {
          HStack {
-            asset.getImage()
-            asset.getText()
+            getImage()
+            Text(asset.name)
             Spacer()
+        }
+    }
+    
+    func getImage() -> Image {
+        switch(asset.type) {
+        case .box:
+            return Image(systemName: "cube.box")
+        case .item:
+            return Image(systemName: "doc")
         }
     }
 }
 
 struct asset_view: PreviewProvider {
     static var previews: some View {
-        AssetRow(asset: Item(id: 1, name: "Test", type: .item))
+        AssetRow(asset: Asset())
     }
 }

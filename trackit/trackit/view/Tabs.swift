@@ -9,6 +9,8 @@
 import SwiftUI
 
 struct Tabs: View {
+    @EnvironmentObject var navigationState: NavigationState
+    @EnvironmentObject var assetRepo: AssetRepository
     @State private var selection = 0
  
     var body: some View {
@@ -21,6 +23,8 @@ struct Tabs: View {
 
 struct tabs_view: PreviewProvider {
     static var previews: some View {
-        Tabs().environmentObject(NavigationState())
+        Tabs()
+            .environmentObject(NavigationState())
+            .environmentObject(AssetRepository())
     }
 }
